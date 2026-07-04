@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { PartyPopper } from '@lucide/vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+
+const count = ref<number | null>(null)
 
 const email = ref('')
 const level = ref('')
@@ -8,6 +10,26 @@ const consent = ref(false)
 const website = ref('') // honeypot
 const status = ref<'idle' | 'loading' | 'success' | 'error'>('idle')
 const errorMsg = ref('')
+
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/count')
+    if (res.ok) {
+      const data = await res.json() as { count?: number }
+      if (typeof data.count === 'number')
+        count.value = data.count
+    }
+  }
+  catch {
+    // Silencieux : le compteur est un bonus, pas bloquant.
+  }
+})
+
+// Après une inscription réussie, on reflète l'ajout tout de suite.
+function bumpCount() {
+  if (typeof count.value === 'number')
+    count.value += 1
+}
 
 const levels = [
   { value: '', label: 'Ton niveau (optionnel)' },
@@ -44,6 +66,7 @@ async function submit() {
       throw new Error(data.error || 'Une erreur est survenue.')
     }
     status.value = 'success'
+    bumpCount()
   }
   catch (err) {
     status.value = 'error'
@@ -69,6 +92,20 @@ async function submit() {
           Laisse ton email : tu auras un accès gratuit à la bêta dès son ouverture,
           et ta voix comptera dans ce qu'on construit en premier.
         </p>
+
+        <!-- Social proof : nombre d'inscrits (offset + inscriptions KV réelles) -->
+        <div
+          v-if="count !== null"
+          class="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-base-200/60 px-4 py-1.5"
+        >
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/70" />
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+          </span>
+          <span class="text-sm text-base-content/70 sans-serif-text">
+            Déjà <span class="font-semibold text-base-content">{{ count.toLocaleString('fr-FR') }}</span> pongistes sur la liste d'attente
+          </span>
+        </div>
 
         <!-- Succès -->
         <div

@@ -26,6 +26,29 @@ export default defineConfig({
   },
 
   plugins: [
+    // Mock dev-only des routes /api du Worker (indisponibles sous `vite dev`).
+    // Ne s'exécute qu'en dev : `configureServer` est ignoré au build/SSG.
+    {
+      name: 'dev-waitlist-api',
+      configureServer(server) {
+        let count = 600 // COUNT_BASE — compteur local en mémoire
+        server.middlewares.use('/api/count', (_req, res) => {
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ count }))
+        })
+        server.middlewares.use('/api/subscribe', (req, res) => {
+          if (req.method !== 'POST') {
+            res.statusCode = 405
+            res.end(JSON.stringify({ error: 'Méthode non autorisée.' }))
+            return
+          }
+          count += 1
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ success: true }))
+        })
+      },
+    },
+
     // https://github.com/posva/unplugin-vue-router
     VueRouter({
       extensions: ['.vue', '.md'],
@@ -102,7 +125,7 @@ export default defineConfig({
     // https://github.com/antfu/vite-plugin-pwa
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.png', 'favicon-32x32.png', 'favicon-16x16.png', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.svg', 'favicon.png', 'favicon-32x32.png', 'favicon-16x16.png', 'apple-touch-icon.png'],
       manifest: {
         name: 'Topspin — Ton classement, enfin beau et vivant',
         short_name: 'Topspin',

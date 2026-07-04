@@ -1,12 +1,23 @@
 import { Resend } from 'resend'
 
+interface KVListResult {
+  keys: { name: string }[]
+  list_complete: boolean
+  cursor?: string
+}
+
 interface KVNamespace {
   get: (key: string) => Promise<string | null>
   put: (key: string, value: string, options?: { metadata?: unknown }) => Promise<void>
+  list: (options?: { prefix?: string, limit?: number, cursor?: string }) => Promise<KVListResult>
 }
 
 interface Fetcher {
   fetch: (request: Request) => Promise<Response>
+}
+
+interface ExecutionContext {
+  waitUntil: (promise: Promise<unknown>) => void
 }
 
 interface Env {
@@ -15,6 +26,9 @@ interface Env {
   RESEND_API_KEY?: string
   NOTIFY_EMAIL?: string
 }
+
+// Nombre de départ affiché : les vraies inscriptions KV s'ajoutent par-dessus.
+const COUNT_BASE = 600
 
 interface SubscribePayload {
   email: string
@@ -119,14 +133,51 @@ async function handleSubscribe(request: Request, env: Env): Promise<Response> {
   return json({ success: true })
 }
 
+// Compte les inscrits réels (clés `email:`), en paginant le KV.
+async function countSubscribers(env: Env): Promise<number> {
+  let total = 0
+  let cursor: string | undefined
+  do {
+    const res = await env.WAITLIST.list({ prefix: 'email:', limit: 1000, cursor })
+    total += res.keys.length
+    cursor = res.list_complete ? undefined : res.cursor
+  } while (cursor)
+  return total
+}
+
+async function handleCount(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  if (!env.WAITLIST)
+    return json({ count: COUNT_BASE })
+
+  // Cache edge court : évite de lister le KV à chaque visite.
+  // `caches.default` est spécifique aux Workers (absent des types DOM).
+  const cache = (caches as unknown as { default: Cache }).default
+  const cacheKey = new Request(new URL('/api/count', request.url).toString())
+  const cached = await cache.match(cacheKey)
+  if (cached)
+    return cached
+
+  const count = COUNT_BASE + await countSubscribers(env)
+  const res = json({ count })
+  res.headers.set('Cache-Control', 'public, max-age=60')
+  ctx.waitUntil(cache.put(cacheKey, res.clone()))
+  return res
+}
+
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url)
 
     if (url.pathname === '/api/subscribe') {
       if (request.method !== 'POST')
         return json({ error: 'Méthode non autorisée.' }, 405)
       return handleSubscribe(request, env)
+    }
+
+    if (url.pathname === '/api/count') {
+      if (request.method !== 'GET')
+        return json({ error: 'Méthode non autorisée.' }, 405)
+      return handleCount(request, env, ctx)
     }
 
     // Tout le reste : servi par les assets statiques (SSG), avec repli 404.
