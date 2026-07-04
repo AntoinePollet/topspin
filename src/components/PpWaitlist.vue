@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PartyPopper } from '@lucide/vue'
 import { ref } from 'vue'
 
 const email = ref('')
@@ -74,8 +75,8 @@ async function submit() {
           v-if="status === 'success'"
           class="mt-8 rounded-2xl border border-success/30 bg-success/10 p-8"
         >
-          <div class="text-4xl mb-3">
-            🏓
+          <div class="mb-3 flex justify-center">
+            <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-success/15 text-success"><PartyPopper class="h-7 w-7" /></span>
           </div>
           <h3 class="title-text text-xl font-semibold text-base-content">
             Tu es sur la liste !

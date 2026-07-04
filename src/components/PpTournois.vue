@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { CalendarDays, MapPin } from '@lucide/vue'
+
 // Tournois fictifs de démonstration.
 const filters = ['Tous', 'Ce week-end', '< 30 km', 'Mon niveau', 'Régional']
 const tournois = [
@@ -61,8 +63,8 @@ const tournois = [
             <span class="shrink-0 rounded-lg bg-white/5 px-2.5 py-1 text-xs text-accent sans-serif-text">{{ t.tag }}</span>
           </div>
           <div class="mt-4 flex items-center justify-between text-sm">
-            <span class="text-base-content/80 font-medium sans-serif-text">📅 {{ t.date }}</span>
-            <span class="text-base-content/50 sans-serif-text">📍 {{ t.dist }}</span>
+            <span class="inline-flex items-center gap-1.5 text-base-content/80 font-medium sans-serif-text"><CalendarDays class="h-4 w-4 text-primary" /> {{ t.date }}</span>
+            <span class="inline-flex items-center gap-1.5 text-base-content/50 sans-serif-text"><MapPin class="h-4 w-4" /> {{ t.dist }}</span>
           </div>
         </div>
       </div>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { SearchX } from '@lucide/vue'
+
 useHead({
   title: 'Page introuvable — Topspin',
   meta: [{ name: 'robots', content: 'noindex' }],
@@ -11,8 +13,8 @@ useHead({
     <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-primary/15 blur-[120px]" />
 
     <div class="relative">
-      <div class="text-6xl mb-4">
-        🏓
+      <div class="mb-4 flex justify-center">
+        <SearchX class="h-14 w-14 text-primary" :stroke-width="1.5" />
       </div>
       <p class="title-text text-7xl font-bold text-gradient">
         404

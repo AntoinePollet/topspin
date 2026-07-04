@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ArrowLeft } from '@lucide/vue'
+
 defineOptions({
   name: 'MentionsLegalesPage',
 })
@@ -18,8 +20,8 @@ useHead({
           <span class="h-4 w-4 rounded-full bg-primary shadow-[0_0_12px_rgba(255,92,53,0.7)]" />
           <span class="text-lg font-bold title-text">Top<span class="text-primary">spin</span></span>
         </RouterLink>
-        <RouterLink to="/" class="text-sm text-base-content/60 hover:text-primary sans-serif-text">
-          ← Accueil
+        <RouterLink to="/" class="inline-flex items-center gap-1.5 text-sm text-base-content/60 hover:text-primary sans-serif-text">
+          <ArrowLeft class="h-4 w-4" /> Accueil
         </RouterLink>
       </div>
     </header>

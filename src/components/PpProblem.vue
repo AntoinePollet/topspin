@@ -1,17 +1,19 @@
 <script setup lang="ts">
+import { EyeOff, FileStack, TrendingDown } from '@lucide/vue'
+
 const pains = [
   {
-    icon: '📉',
+    icon: TrendingDown,
     title: 'Un classement figé, illisible',
     text: 'Un chiffre brut, mis à jour en différé, sans contexte. Impossible de voir d\'un coup d\'œil si tu progresses vraiment.',
   },
   {
-    icon: '🕳️',
+    icon: EyeOff,
     title: 'Aucun historique visuel',
     text: 'Ta progression sur 3 saisons ? Des tableaux austères à recouper à la main. Ta courbe n\'existe nulle part.',
   },
   {
-    icon: '🗂️',
+    icon: FileStack,
     title: 'Des tournois éparpillés',
     text: 'PDF, sites de clubs, groupes Facebook… Trouver les tournois près de chez toi relève de l\'enquête.',
   },
@@ -42,8 +44,8 @@ const pains = [
           :visible-once="{ opacity: 1, y: 0, transition: { duration: 450, delay: i * 120 } }"
           class="rounded-2xl border border-white/10 bg-base-200/50 p-6"
         >
-          <div class="text-3xl mb-4">
-            {{ p.icon }}
+          <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <component :is="p.icon" class="h-5 w-5" :stroke-width="2" />
           </div>
           <h3 class="title-text text-lg font-semibold mb-2">
             {{ p.title }}

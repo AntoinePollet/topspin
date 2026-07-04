@@ -17,6 +17,7 @@
     "sizecheck": "npx vite-bundle-visualizer"
   },
   "dependencies": {
+    "@lucide/vue": "catalog:",
     "@unhead/vue": "catalog:frontend",
     "@vueuse/core": "catalog:frontend",
     "@vueuse/motion": "catalog:",

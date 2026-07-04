@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ArrowUp } from '@lucide/vue'
+
 // Données de DÉMONSTRATION (fictives) — Topspin n'est pas encore connecté
 // à l'API FFTT. Servent uniquement à illustrer l'interface.
 const rankPoints = [982, 991, 1005, 998, 1024, 1051, 1043, 1078, 1102, 1135, 1121, 1189]
@@ -23,7 +25,7 @@ function scrollTo(id: string) {
         <div v-motion :initial="{ opacity: 0, y: 24 }" :enter="{ opacity: 1, y: 0, transition: { duration: 500 } }">
           <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-base-content/70 sans-serif-text mb-6">
             <span class="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-            🏓 Tennis de table · projet indépendant · bêta
+            Tennis de table · projet indépendant · bêta
           </div>
 
           <h1 class="title-text text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05]">
@@ -77,7 +79,7 @@ function scrollTo(id: string) {
                 </p>
               </div>
               <div class="inline-flex items-center gap-1 rounded-full bg-success/15 text-success px-2.5 py-1 text-sm font-semibold">
-                ▲ +207 <span class="hidden sm:inline text-xs font-normal">/ saison</span>
+                <ArrowUp class="h-4 w-4" /> +207 <span class="hidden sm:inline text-xs font-normal">/ saison</span>
               </div>
             </div>
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Bandage, Check, Wrench } from '@lucide/vue'
+
 // Données de démonstration fictives.
 const seasonPoints = [720, 760, 745, 810, 855, 900, 940, 985, 1030, 1075, 1130, 1189]
 const matchesByMonth = [
@@ -44,7 +46,7 @@ const features = [
 
           <ul class="mt-8 space-y-4">
             <li v-for="(f, i) in features" :key="i" class="flex gap-3">
-              <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary text-xs">✓</span>
+              <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary"><Check class="h-3 w-3" :stroke-width="3" /></span>
               <span class="description-text text-sm text-base-content/80">{{ f }}</span>
             </li>
           </ul>
@@ -66,8 +68,8 @@ const features = [
             </div>
             <PpLineChart :values="seasonPoints" stroke="#ff5c35" :height="180" />
             <div class="mt-3 flex flex-wrap gap-2">
-              <span class="inline-flex items-center gap-1 rounded-full bg-white/5 border border-white/10 px-2.5 py-1 text-[11px] text-base-content/60 sans-serif-text">🩹 Blessure · nov.</span>
-              <span class="inline-flex items-center gap-1 rounded-full bg-white/5 border border-white/10 px-2.5 py-1 text-[11px] text-base-content/60 sans-serif-text">🏓 Nouvelle plaque · janv.</span>
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-2.5 py-1 text-[11px] text-base-content/60 sans-serif-text"><Bandage class="h-3.5 w-3.5" /> Blessure · nov.</span>
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-2.5 py-1 text-[11px] text-base-content/60 sans-serif-text"><Wrench class="h-3.5 w-3.5" /> Nouvelle plaque · janv.</span>
             </div>
           </div>
 

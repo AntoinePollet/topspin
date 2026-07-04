@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Menu, X } from '@lucide/vue'
 import { onMounted, onUnmounted, ref } from 'vue'
 
 const scrolled = ref(false)
@@ -67,9 +68,8 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
           aria-label="Menu"
           @click="mobileOpen = !mobileOpen"
         >
-          <div class="i-carbon-menu text-xl">
-            ☰
-          </div>
+          <X v-if="mobileOpen" class="h-5 w-5" />
+          <Menu v-else class="h-5 w-5" />
         </button>
       </div>
     </div>
