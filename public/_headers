@@ -1,0 +1,44 @@
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com
+
+# HTML : toujours revalider auprès de l'origine (déploiement visible immédiatement,
+# pas de page figée au bord). Pages renvoie un 304 via ETag si rien n'a changé.
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Sitemap : cache edge court pour que les pages ajoutées à un déploiement
+# apparaissent vite côté crawlers (au lieu de rester figées jusqu'à 24h).
+/sitemap.xml
+  Cache-Control: public, max-age=3600, s-maxage=3600
+
+/robots.txt
+  Cache-Control: public, max-age=86400, s-maxage=86400
+
+/manifest.json
+  Cache-Control: public, max-age=86400, s-maxage=86400
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable

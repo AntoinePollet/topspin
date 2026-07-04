@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import 'tailwindcss';
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: 'pongping';
+  default: true; /* set as default */
+  prefersdark: true;
+  color-scheme: dark; /* color of browser-provided UI */
+
+  --color-base-100: #0b0f17; /* Fond principal, presque noir bleuté */
+  --color-base-200: #121826; /* Surfaces légèrement surélevées */
+  --color-base-300: #1b2334; /* Cartes / bordures */
+  --color-base-content: #e8edf5; /* Texte clair */
+  --color-primary: #ff5c35; /* Orange balle de ping — accent principal */
+  --color-primary-content: #0b0f17; /* Texte foncé sur orange */
+  --color-secondary: #34e5c6; /* Électrique — data / courbes */
+  --color-secondary-content: #04120f;
+  --color-accent: #b6ff3d; /* Vert électrique — highlights data */
+  --color-accent-content: #0b0f17;
+  --color-neutral: #1b2334;
+  --color-neutral-content: #e8edf5;
+  --color-info: #38bdf8;
+  --color-info-content: #04121b;
+  --color-success: #22c55e;
+  --color-success-content: #04120a;
+  --color-warning: #f59e0b;
+  --color-warning-content: #1f1300;
+  --color-error: #ef4444;
+  --color-error-content: #1a0303;
+
+  --radius-selector: 1rem;
+  --radius-field: 0.65rem;
+  --radius-box: 1.25rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+/* Custom styles */
+html {
+  scroll-behavior: smooth;
+  background: #0b0f17;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0b0f17;
+  color: #e8edf5;
+}
+
+/* Space Grotesk pour les titres */
+.title-text {
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Inter pour descriptions / corps */
+.description-text {
+  font-family: 'Inter', sans-serif;
+}
+
+.sans-serif-text {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Dégradé de texte réutilisable pour les accents */
+.text-gradient {
+  background: linear-gradient(120deg, #ff5c35 0%, #ff8f6b 40%, #b6ff3d 120%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Lueur d'accent pour blocs data */
+.glow-primary {
+  box-shadow:
+    0 0 0 1px rgba(255, 92, 53, 0.15),
+    0 20px 60px -20px rgba(255, 92, 53, 0.35);
+}
+
+/* Grille de fond subtile */
+.bg-grid {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Custom scrollbar (sombre) */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0f17;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a3550;
+  border-radius: 6px;
+  border: 2px solid #0b0f17;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a4566;
+}
+
+/* Animation de tracé pour les courbes SVG */
+@keyframes dash-in {
+  from {
+    stroke-dashoffset: var(--dash-len, 1000);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}

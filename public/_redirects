@@ -1,0 +1,5 @@
+# Pas de catch-all SPA : le site est pré-rendu (SSG), Cloudflare Pages sert
+# directement chaque page statique et renvoie automatiquement 404.html pour
+# les chemins inconnus (vrai code 404, meilleur pour le SEO).
+#
+# Ajouter ici d'éventuelles redirections 301 (anciennes URLs → nouvelles).

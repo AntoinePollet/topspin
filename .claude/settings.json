@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fsck *)",
+      "Bash(awk '{print $4}')",
+      "Bash(git stash *)",
+      "Bash(git add *)",
+      "Read(//private/tmp/**)",
+      "Bash(pnpm typecheck *)"
+    ],
+    "additionalDirectories": [
+      "/Users/pollet/workspace/chape-expert/.claude",
+      "/private/tmp"
+    ]
+  }
+}
