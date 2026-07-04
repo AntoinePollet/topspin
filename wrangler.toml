@@ -1,11 +1,17 @@
 name = "pong-ping"
 compatibility_date = "2025-05-05"
 compatibility_flags = [ "nodejs_compat" ]
-pages_build_output_dir = "dist"
+main = "worker/index.ts"
+
+# Site statique (SSG) servi via Workers Static Assets.
+# `pnpm build` génère dist/ ; le Worker sert ces fichiers en priorité et
+# ne s'exécute que pour les requêtes non couvertes par un asset (ex. /api/*).
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "404-page"
 
 # Namespace KV pour la waitlist (créé via `wrangler kv namespace create WAITLIST`).
-# ⚠️ Pour la prod, configure aussi le binding WAITLIST dans
-# Cloudflare Pages → Settings → Functions → KV namespace bindings.
 [[kv_namespaces]]
 binding = "WAITLIST"
 id = "7fc4f5f8327145a3b143adc641ee6d71"

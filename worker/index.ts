@@ -5,15 +5,15 @@ interface KVNamespace {
   put: (key: string, value: string, options?: { metadata?: unknown }) => Promise<void>
 }
 
+interface Fetcher {
+  fetch: (request: Request) => Promise<Response>
+}
+
 interface Env {
+  ASSETS: Fetcher
   WAITLIST: KVNamespace
   RESEND_API_KEY?: string
   NOTIFY_EMAIL?: string
-}
-
-interface PagesContext {
-  request: Request
-  env: Env
 }
 
 interface SubscribePayload {
@@ -52,9 +52,7 @@ function validate(data: unknown): data is SubscribePayload {
   return typeof p.email === 'string' && isValidEmail(p.email)
 }
 
-export async function onRequestPost(context: PagesContext): Promise<Response> {
-  const { request, env } = context
-
+async function handleSubscribe(request: Request, env: Env): Promise<Response> {
   let payload: unknown
   try {
     payload = await request.json()
@@ -74,7 +72,6 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
   const level = typeof payload.level === 'string' ? payload.level : null
   const key = `email:${email}`
 
-  // Stockage KV (dédup sur l'email).
   if (!env.WAITLIST) {
     console.error('Binding KV WAITLIST manquant')
     return json({ error: 'Service momentanément indisponible.' }, 500)
@@ -82,7 +79,7 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
 
   const existing = await env.WAITLIST.get(key)
   if (existing) {
-    // Déjà inscrit : on renvoie un succès idempotent sans renotifier.
+    // Déjà inscrit : succès idempotent sans renotifier.
     return json({ success: true, alreadySubscribed: true })
   }
 
@@ -120,4 +117,19 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
   }
 
   return json({ success: true })
+}
+
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url)
+
+    if (url.pathname === '/api/subscribe') {
+      if (request.method !== 'POST')
+        return json({ error: 'Méthode non autorisée.' }, 405)
+      return handleSubscribe(request, env)
+    }
+
+    // Tout le reste : servi par les assets statiques (SSG), avec repli 404.
+    return env.ASSETS.fetch(request)
+  },
 }
